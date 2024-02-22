@@ -21,25 +21,25 @@ jobs:
                 name: subte_data_raw
                 path: subte_data_raw.csv
     processed:
-    runs-on: ubuntu-latest
-    needs: extract
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.10' 
-          cache: 'pip' # caching pip dependencies
-      - name: Descargar datos extraídos
-        uses: actions/download-artifact@v4
-        with:
-          name: subte_data_raw
-      - run: pip install -r requirements.txt
-      - run: python ./scripts/processed.py
-      - name: Procesa data en un csv
-        uses: actions/upload-artifact@v4
-        with:
-          name: subte_data_processed
-          path: subte_data_processed.csv
+        runs-on: ubuntu-latest
+        needs: extract
+        steps:
+          - uses: actions/checkout@v4
+          - uses: actions/setup-python@v5
+            with:
+              python-version: '3.10' 
+              cache: 'pip' # caching pip dependencies
+          - name: Descargar datos extraídos
+            uses: actions/download-artifact@v4
+            with:
+              name: subte_data_raw
+          - run: pip install -r requirements.txt
+          - run: python ./scripts/processed.py
+          - name: Procesa data en un csv
+            uses: actions/upload-artifact@v4
+            with:
+              name: subte_data_processed
+              path: subte_data_processed.csv
 
     load:
         runs-on: ubuntu-latest
