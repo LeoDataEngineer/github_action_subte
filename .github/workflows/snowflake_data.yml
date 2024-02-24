@@ -1,4 +1,4 @@
-name: Extract snowflow
+name: Extract_data_snowflow
 
 on:
   workflow_dispatch:
