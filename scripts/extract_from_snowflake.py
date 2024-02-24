@@ -1,7 +1,6 @@
 import pandas as pd
 import snowflake.connector
 import os 
-import csv
 
 def conectar_snowflake():
     """Función para conectar a Snowflake"""
@@ -25,11 +24,14 @@ def get_data_snowflake(conn):
         # Obtener todos los registros de la tabla
         rows = cur.fetchall()
 
-        # Retornar los datos obtenidos
-        return rows
+        # Obtener los nombres de las columnas
+        columns = [desc[0] for desc in cur.description]
+
+        # Retornar los datos obtenidos y los nombres de las columnas
+        return rows, columns
     except Exception as e:
         print("Error al obtener los datos de la tabla 'subtedata':", e)
-        return None
+        return None, None
     finally:
         cur.close()
 
@@ -37,12 +39,12 @@ def get_data_snowflake(conn):
 conn = conectar_snowflake()
 
 # Obtener los datos de la tabla 'subtedata'
-data = get_data_snowflake(conn)
+data, columns = get_data_snowflake(conn)
 
-# Guardar los datos como un archivo CSV
-if data:
-
-    data.to_csv('data_snow.csv', index=False)
+# Si se obtuvieron datos, crear un DataFrame de Pandas y guardarlos como CSV
+if data and columns:
+    df = pd.DataFrame(data, columns=columns)
+    df.to_csv('data_snow.csv', index=False)
 
 # Cerrar la conexión
 conn.close()
