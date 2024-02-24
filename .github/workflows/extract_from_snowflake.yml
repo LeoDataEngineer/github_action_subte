@@ -15,6 +15,10 @@ jobs:
                 cache: 'pip' # caching pip dependencies
             - run: pip install -r requirements.txt
             - run: python ./scripts/extract_from_snowflake.py
+              env:
+                SNOWSQL_USER: ${{ secrets.SNOWSQL_USER }}
+                SNOWSQL_PWD: ${{ secrets.SNOWSQL_PWD }}
+                SNOWSQL_ACCOUNT: ${{ secrets.SNOWSQL_ACCOUNT }}
             - name: Extrae data snowflake
               uses: actions/upload-artifact@v4
               with:
