@@ -41,9 +41,8 @@ data = get_data_snowflake(conn)
 
 # Guardar los datos como un archivo CSV
 if data:
-    with open('extracted_data.csv', 'w', newline='') as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerows(data)
+
+    data.to_csv('data_snow.csv', index=False)
 
 # Cerrar la conexión
 conn.close()
