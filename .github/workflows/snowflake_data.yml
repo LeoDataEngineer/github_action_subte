@@ -30,7 +30,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: data_snow
-          path: data_snow
+          path: data_snow.csv
 
       # Paso para leer el contenido del artefacto y guardarlo en un archivo CSV
       - name: Write artifact content to CSV
