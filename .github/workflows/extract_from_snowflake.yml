@@ -35,9 +35,9 @@ jobs:
         run: mv extracted_data.csv datos_snow.csv
         working-directory: ${{ github.workspace }}
 
-      - name: Commit and push changes
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "Add extracted data from Snowflake"
-          commit_user_name: "GitHub Actions"
-          commit_user_email: "actions@github.com"
+      # - name: Commit and push changes
+      #   uses: stefanzweifel/git-auto-commit-action@v4
+      #   with:
+      #     commit_message: "Add extracted data from Snowflake"
+      #     commit_user_name: "GitHub Actions"
+      #     commit_user_email: "actions@github.com"
