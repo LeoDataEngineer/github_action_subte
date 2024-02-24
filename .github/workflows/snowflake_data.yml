@@ -46,7 +46,7 @@ jobs:
         # Paso para leer el contenido del artefacto y guardarlo en un archivo CSV
         - name: Write artifact content to CSV
           run: |
-            cat data_snow/data_snow.csv > data_snow.csv
+            cat data_snow.csv > data_snow.csv
           shell: bash
   
         # Paso para agregar y subir el archivo CSV al repositorio
