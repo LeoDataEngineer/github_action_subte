@@ -1,43 +1,31 @@
-name: Extract from Snowflake
+name: Extract data from Snowflake
 
 on:
   workflow_dispatch:
-  
+  schedule:
+    - cron: '6,26,46 * * * *'
+
 jobs:
-  extract_from_snowflake:
+  extract_data:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+    - name: Install dependencies
+      run: |
+        pip install snowflake-connector-python
 
-      - name: Extract data from Snowflake
-        run: |
-          python scripts/extract_from_snowflake.py
-        env:
-          SNOWSQL_USER: ${{ secrets.SNOWSQL_USER }}
-          SNOWSQL_PWD: ${{ secrets.SNOWSQL_PWD }}
-          SNOWSQL_ACCOUNT: ${{ secrets.SNOWSQL_ACCOUNT }}
-          SNOWSQL_DATABASE: 'SOURCE'
-          SNOWSQL_SCHEMA: 'RAW'
-          SNOWSQL_TABLE: 'SUBTEDATA'
+    - name: Extract data and save as CSV
+      env:
+        SNOWSQL_USER: ${{ secrets.SNOWSQL_USER }}
+        SNOWSQL_PWD: ${{ secrets.SNOWSQL_PWD }}
+        SNOWSQL_ACCOUNT: ${{ secrets.SNOWSQL_ACCOUNT }}
+      run: python extract_data.py
 
-      - name: Save extracted data as CSV
-        run: mv extracted_data.csv datos_snow.csv
-        working-directory: ${{ github.workspace }}
-
-      # - name: Commit and push changes
-      #   uses: stefanzweifel/git-auto-commit-action@v4
-      #   with:
-      #     commit_message: "Add extracted data from Snowflake"
-      #     commit_user_name: "GitHub Actions"
-      #     commit_user_email: "actions@github.com"
