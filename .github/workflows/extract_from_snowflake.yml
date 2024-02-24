@@ -1,31 +1,23 @@
-name: Extract data from Snowflake
+name: Extract  snowflow
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '6,26,46 * * * *'
-
+  # schedule:
+  #   - cron: '*/5 * * * *'  # Ejecutar cada minuto
 jobs:
-  extract_data:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-
-    - name: Install dependencies
-      run: |
-        pip install snowflake-connector-python
-
-    - name: Extract data and save as CSV
-      env:
-        SNOWSQL_USER: ${{ secrets.SNOWSQL_USER }}
-        SNOWSQL_PWD: ${{ secrets.SNOWSQL_PWD }}
-        SNOWSQL_ACCOUNT: ${{ secrets.SNOWSQL_ACCOUNT }}
-      run: python extract_data.py
+    extract:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-python@v5
+              with:
+                python-version: '3.10' 
+                cache: 'pip' # caching pip dependencies
+            - run: pip install -r requirements.txt
+            - run: python ./scripts/extract_from_snowflake.py
+            - name: Extrae data snowflake
+              uses: actions/upload-artifact@v4
+              with:
+                name: subte_data_raw
+                path: subte_data_raw.csv
 
