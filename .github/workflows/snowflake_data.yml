@@ -1,0 +1,35 @@
+name: Extract snowflow
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '*/5 * * * *'  # Ejecutar cada minuto
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip' # caching pip dependencies
+      - run: pip install -r requirements.txt
+      - run: python ./scripts/extract_from_snowflake.py
+        env:
+          SNOWSQL_USER: ${{ secrets.SNOWSQL_USER }}
+          SNOWSQL_PWD: ${{ secrets.SNOWSQL_PWD }}
+          SNOWSQL_ACCOUNT: ${{ secrets.SNOWSQL_ACCOUNT }}
+      - name: Extrae data snowflake
+        uses: actions/upload-artifact@v4
+        with:
+          name: data_snow
+          path: data_snow.csv
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data_snow.csv
+          git commit -m "Add extracted data from Snowflake"
+          git push
+
