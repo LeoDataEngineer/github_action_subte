@@ -27,8 +27,8 @@ jobs:
           path: data_snow.csv
       - name: Commit changes
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git config user.name "Automated"
+          git config user.email "actions@users.noreply.github.com"
           git add data_snow.csv
           git commit -m "Add extracted data from Snowflake"
           git push
