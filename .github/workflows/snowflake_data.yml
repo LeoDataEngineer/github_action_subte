@@ -25,10 +25,20 @@ jobs:
         with:
           name: data_snow
           path: data_snow.csv
-      - name: Commit changes
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: data_snow
+          path: downloaded_artifact
+
+      # Paso para manipular el archivo CSV con jq
+      - name: Manipulate CSV with jq
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "Automated"
-          git add data_snow.csv
-          git commit -m "Add extracted data from Snowflake"
-          git push https://github.com/LeoDataEngineer/github_action_subte.git HEAD:main
+          cat downloaded_artifact/data_snow.csv | jq '.' > data_snow_modified.csv   
+      # - name: Commit changes
+      #   run: |
+      #     git config --local user.email "action@github.com"
+      #     git config --local user.name "Automated"
+      #     git add data_snow.csv
+      #     git commit -m "Add extracted data from Snowflake"
+      #     git push https://github.com/LeoDataEngineer/github_action_subte.git HEAD:main
