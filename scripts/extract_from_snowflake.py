@@ -1,7 +1,7 @@
 import pandas as pd
+from snowflake.connector.pandas_tools import write_pandas
 import snowflake.connector
 import os 
-
 def conectar_snowflake():
     """Función para conectar a Snowflake"""
     conn = snowflake.connector.connect(
