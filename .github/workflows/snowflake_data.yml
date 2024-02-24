@@ -52,4 +52,4 @@ jobs:
             git commit -m "Add data_snow.csv"
             git push origin HEAD:main
           env:
-            GH_TOKEN: ${{ secrets.GH_TOKEN }}
+            TOKEN: ${{ secrets.TOKEN }}
